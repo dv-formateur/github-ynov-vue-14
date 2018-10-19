@@ -55,9 +55,7 @@ var project_list = [
 ]
 
 var apiURL = 'https://api.github.com/repos/'
-/**
- * Actual demo
- */
+
 
  var demo = new Vue({
 
