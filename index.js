@@ -1,3 +1,5 @@
+
+
 var users_list = [
 "Killy85",
 "Nair0fl",
@@ -25,39 +27,13 @@ var users_list = [
 "alixnzt"]
 
 var project_list = [
-"github-ynov-vue",
-"guillaume-fourny",
-"nicolas-goureau",
-"mathias-loiret",
-"steven-fongue",
-"matthieu-fournier",
-"maxime-courant",
-"matthieu-saint-martin",
-"antoine-gosset",
-"kevin-pautonnier",
-"mael-maillard",
-"alix-nouzillat",
-"raphael-charre",
-"teofilo-jeandot",
-"florian-boche",
-"antoine-drouard",
-"etienne-hounguevou",
-"clement-caillaud",
-"thomas-pichard",
-"gregoire-meunier",
-"mathias-dupont",
-"benjamin-brasseur",
-"rudy-schoepfer",
-"benoit-cochet",
-"maxime-rolland",
-"yanis-dando",
-"alexandre-desvallees"
+"github-ynov-vue"
 ]
 
 var apiURL = 'https://api.github.com/repos/'
 
 
- var demo = new Vue({
+var demo = new Vue({
 
   el: '#demo',
 
@@ -65,10 +41,14 @@ var apiURL = 'https://api.github.com/repos/'
     branches: ['master', 'dev'],
     currentBranch: 'master',
     commits: null,
-    selected_user: null,
+    selected_user: 'etienneYnov',
     users : users_list,
-    selected_project: null,
-    noms : project_list
+    selected_project: 'github-ynov-vue',
+    noms : project_list,
+    checkedNames: [],
+    resultListe: [],
+    date_start: null,
+    date_end: null
   },
 
   created: function () {
@@ -79,13 +59,15 @@ var apiURL = 'https://api.github.com/repos/'
     currentBranch: 'fetchData',
     selected_user: (val) => {
       console.log("the new selected user is " + val)
-      var project_name = val
-      console.log("the new selected user is " + project_name)
+      var user_name = val
+      
+      console.log("the new selected user is " + user_name)
     },
     selected_project: (val2) => {
       console.log("the new selected project is " + val2)
-      var user_name = val2
-      console.log("the new selected project is " + user_name)
+      var project_name = val2
+
+      console.log("the new selected project is " + project_name)
     }
   },
 
@@ -101,16 +83,23 @@ var apiURL = 'https://api.github.com/repos/'
 
   methods: {
     fetchData: function () {
-      var xhr = new XMLHttpRequest()
-      var self = this
-      xhr.open('GET', apiURL + this.selected_user + '/' + this.selected_project + '/commits?')
+
+
+     var xhr = new XMLHttpRequest()
+     var self = this
+     this.resultListe = []
+     this.checkedNames.forEach(function(name){
+      console.log(self.selected_project)
+      xhr.open('GET', apiURL + name + '/' + self.selected_project + '/commits?since='+ self.date_start + '&until='+ self.date_end,false)
+      xhr.setRequestHeader("Authorization", "Basic " + btoa("etienneYnov:4d4963021767d7ca9c2733b607e8c32aa7b8ae34"));
+      console.log(apiURL + name + '/' + self.selected_project + '/commits?since='+ this.date_start + '&until='+ this.date_end)
       xhr.onload = function () {
         self.commits = JSON.parse(xhr.responseText)
-        console.log(self.commits[0].html_url)
+        self.resultListe.push(self.commits)
       }
       xhr.send()
-    }
-  }
-})
 
- console.log(demo.users)
+    })
+   }
+ }
+})
