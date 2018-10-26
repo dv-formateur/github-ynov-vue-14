@@ -88,11 +88,15 @@ var demo = new Vue({
      var xhr = new XMLHttpRequest()
      var self = this
      this.resultListe = []
+
      this.checkedNames.forEach(function(name){
+
       console.log(self.selected_project)
+
       xhr.open('GET', apiURL + name + '/' + self.selected_project + '/commits?since='+ self.date_start + '&until='+ self.date_end,false)
-      xhr.setRequestHeader("Authorization", "Basic " + btoa("etienneYnov:toktok"));
+      xhr.setRequestHeader("Authorization", "Basic " + btoa("etienneYnov:187231752c3dfc4af2de62207da9a42d14ab6ce9"));
       console.log(apiURL + name + '/' + self.selected_project + '/commits?since='+ self.date_start + '&until='+ self.date_end)
+
       xhr.onload = function () {
         self.commits = JSON.parse(xhr.responseText)
         self.resultListe.push(self.commits)
